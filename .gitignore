@@ -1,0 +1,20 @@
+# Maven (for weatherifyBack/ or weatherify-backend/)
+weatherifyBack/target/
+weatherifyBack/pom.xml.tag
+weatherifyBack/pom.xml.releaseBackup
+weatherifyBack/pom.xml.versionsBackup
+weatherifyBack/release.properties
+weatherifyBack/dependency-reduced-pom.xml
+weatherifyBack/buildNumber.properties
+weatherifyBack/.mvn/timing.properties
+
+# Compiled class files (general Java)
+*.class
+
+# JVM crash logs
+hs_err_pid*
+replay_pid*
+
+# Packaged archives (if they appear outside target, though spring-boot:repackage puts it in target)
+# Consider if you really need a broad *.jar ignore, or scope it if necessary.
+# For now, relying on weatherifyBack/target/ is primary for the build output.
