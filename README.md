@@ -75,7 +75,7 @@ cd weatherifyBack
 mvn spring-boot:run
 ```
 
-The backend will run at: `http://localhost:8080`
+The backend will run at: `[http://localhost:8080](http://127.0.0.1:8080)`
 
 ### 2. Frontend (React + Vite)
 
@@ -85,7 +85,7 @@ npm install
 npm run dev
 ```
 
-The frontend will run at: `http://localhost:5173`
+The frontend will run at: `http://localhost:8080`
 
 ---
 
@@ -100,13 +100,10 @@ server.port=8080
 # Spotify API Credentials
 spotify.client.id=your_client_id
 spotify.client.secret=your_client_secret
-spotify.redirect.uri=http://localhost:8080/api/v1/auth/spotify/callback
+spotify.redirect.uri=http://127.0.0.1:8080/api/v1/auth/spotify/callback
 
 # WeatherAPI Key
 weatherapi.key=your_weatherapi_key
-
-# Frontend base URL
-app.frontend.base-url=http://localhost:8080
 ```
 
 **Note:** Do not commit real secrets. Use `application.properties.example` for safe sharing.
