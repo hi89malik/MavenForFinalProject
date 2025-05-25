@@ -1,176 +1,179 @@
-Weatherify
+# Weatherify
+
 A full-stack application that generates Spotify playlists based on current weather conditions using React (frontend) and Spring Boot (backend).
 
-Overview
+---
+
+## Overview
+
 This project is composed of two main components:
 
-weatherifyFront: The frontend built with React.
+* **weatherifyFront**: The frontend built with React and Vite.
+* **weatherifyBack**: The backend built using Java Spring Boot.
 
-weatherifyBack: The backend built using Java and Spring Boot.
+---
 
-This README focuses on setting up and running the project locally by building the frontend and packaging it into the Spring Boot application, which is then run as a single executable JAR.
+## Project Structure
 
-Project Structure
+```
 WeatherifyFinalProjectSubmission/
-├── weatherifyFront/            # React frontend
+├── weatherifyFront/
+│   ├── src/
+│   │   ├── components/         # Contains WeatherifyApp UI logic
+│   │   ├── icons/              # Icon components (e.g., sun, rain, cloud)
+│   │   ├── primitives/         # UI primitives like Button, IconButton
+│   │   ├── styles/             # Custom CSS for layout
+│   │   └── index.jsx           # Entry point
 │   ├── public/                 # Public assets
-│   └── src/
-│       ├── components/         # Contains WeatherifyApp.js (main UI logic)
-│       ├── icons/              # Icon components
-│       ├── primitives/         # Reusable UI primitives (Button, IconButton)
-│       ├── styles/             # Custom CSS
-│       └── index.jsx           # Frontend entry point
-│   └── package.json            # Frontend dependencies and scripts (akin to pom.xml for frontend)
+│   └── package.json            # Frontend dependencies
 │
-├── weatherifyBack/             # Spring Boot backend
+├── weatherifyBack/
 │   ├── src/main/java/com/weatherify/
-│   │   ├── config/             # SpotifyApi bean configuration, WebConfig (CORS)
-│   │   ├── controller/         # REST API controllers (AuthController, WeatherController, etc.)
-│   │   ├── service/            # Business logic (SpotifyAuthService, WeatherService, etc.)
-│   │   ├── util/               # Utility classes (e.g., weather-to-genre mapping)
-│   │   └── WeatherPlaylistApplication.java # Spring Boot main application class
-│   └── src/main/resources/
-│       ├── static/             # Built frontend files will be copied here by Maven
-│       ├── application.properties  # Configuration (API keys, server settings)
-│       └── genres_dict.json        # Data for weather-to-genre mapping
-│   └── pom.xml                 # Backend Maven project configuration
+│   │   ├── config/             # Spotify API config and CORS setup
+│   │   ├── controller/         # REST controllers (auth, weather, playlist)
+│   │   ├── service/            # Service logic for Spotify and weather APIs
+│   │   ├── util/               # Weather-to-genre mapping logic
+│   │   └── WeatherPlaylistApplication.java # Main application entry
+│   ├── src/main/resources/
+│   │   ├── static/             # Contains built frontend files
+│   │   ├── application.properties  # API keys and configuration
+│   │   └── genres_dict.json        # Genre mapping data
+│   └── pom.xml                 # Maven build configuration
 │
-└── .gitignore                  # Specifies intentionally untracked files that Git should ignore
-└── pom.xml                     # Parent Maven POM file (if this is a multi-module root)
-└── README.md                   # This file
+├── .gitignore
+├── pom.xml                     # Optional: parent POM for multi-module setup
+└── README.md
+```
 
+---
 
-Key configuration files include:
+## Prerequisites
 
-Frontend: weatherifyFront/package.json (defines dependencies and scripts)
+Install the following tools before running the app:
 
-Backend: weatherifyBack/pom.xml (Maven project configuration)
+* Node.js and npm: [https://nodejs.org](https://nodejs.org)
+* Java 21 or higher: [https://adoptium.net/](https://adoptium.net/)
+* Maven: [https://maven.apache.org](https://maven.apache.org)
 
-Backend: weatherifyBack/src/main/resources/application.properties (application settings, API keys)
+Verify installation with:
 
-Prerequisites
-Install the following tools before running the app locally:
+```bash
+node -v
+npm -v
+java -version
+mvn -v
+```
 
-Node.js and npm: (LTS version recommended)
+---
 
-Download: https://nodejs.org
+## Running the Application
 
-Verify: node -v and npm -v
+### 1. Backend (Spring Boot)
 
-Java Development Kit (JDK):
+```bash
+cd weatherifyBack
+mvn spring-boot:run
+```
 
-Version: Java 21 or higher (as specified in weatherifyBack/pom.xml)
+The backend will run at: `http://localhost:8080`
 
-Download: e.g., Oracle JDK, OpenJDK (Adoptium Temurin), Amazon Corretto.
+### 2. Frontend (React + Vite)
 
-Verify: java -version
+```bash
+cd weatherifyFront
+npm install
+npm run dev
+```
 
-Apache Maven:
+The frontend will run at: `http://localhost:5173`
 
-Download: https://maven.apache.org
+---
 
-Verify: mvn -v
+## API Keys Setup
 
-Local Development Setup
-1. API Keys & Backend Configuration
-The backend requires API keys and specific settings for local development.
+### File: `weatherifyBack/src/main/resources/application.properties`
 
-File: weatherifyBack/src/main/resources/application.properties
-
-Recommendation: If your repository is public or shared, it's best practice to not commit your actual application.properties file if it contains secrets. Instead, commit a template like application.properties.example and add application.properties to your .gitignore file. Developers would then copy the example and fill in their actual keys.
-
-Create or update application.properties with the following (replace placeholders with your actual keys and ensure URIs are correct for local setup):
-
+```properties
 # Server Port
 server.port=8080
 
 # Spotify API Credentials
-spotify.client.id=YOUR_SPOTIFY_CLIENT_ID
-spotify.client.secret=YOUR_SPOTIFY_CLIENT_SECRET
-# For local development, when backend runs on 8080 and serves the frontend
+spotify.client.id=your_client_id
+spotify.client.secret=your_client_secret
 spotify.redirect.uri=http://localhost:8080/api/v1/auth/spotify/callback
 
-# WeatherAPI.com Key
-weatherapi.key=YOUR_WEATHERAPI_KEY
+# WeatherAPI Key
+weatherapi.key=your_weatherapi_key
 
-# Frontend base URL for redirects from AuthController
-# This should point to where Spring Boot serves the application
+# Frontend base URL
 app.frontend.base-url=http://localhost:8080
+```
 
-# Optional: For local HTTP development, you might not need forward-header strategies
-# server.forward-headers-strategy=NONE
+**Note:** Do not commit real secrets. Use `application.properties.example` for safe sharing.
 
-2. Spotify Developer Dashboard Setup
-Go to your Spotify Developer Dashboard.
+### Spotify Developer Dashboard
 
-Select your application.
-
-Under "Settings" -> "Redirect URIs", ensure that the URI specified in your local application.properties for spotify.redirect.uri is added and saved. For the example above, this would be:
+Make sure this redirect URI is listed:
+```
 http://localhost:8080/api/v1/auth/spotify/callback
+```
 
-3. Frontend Configuration for Packaged Mode
-File: weatherifyFront/src/components/WeatherifyApp.jsx (or your main React app component file)
+---
 
-For the setup where Spring Boot serves the built frontend files, the BACKEND_URL should be an empty string, making API calls relative to the current origin:
+## Building and Packaging as Single JAR
 
-// Inside WeatherifyApp.jsx
-const BACKEND_URL = ""; // For when Spring Boot serves the frontend
+This method bundles frontend into the backend JAR:
 
-Running the Application Locally (Packaged Mode)
-This method involves building the frontend, then packaging it with the Spring Boot backend into a single executable JAR, and then running that JAR.
+### Step 1: Build Frontend
 
-1. Build the Frontend (React):
-* Open a terminal.
-* Navigate to your frontend directory:
-bash cd path/to/WeatherifyFinalProjectSubmission/weatherifyFront 
-* Install dependencies (if you haven't already or they've changed):
-bash npm install 
-* Create a production build of the frontend:
-bash npm run build 
-This will generate optimized static files in the weatherifyFront/dist/ directory.
+```bash
+cd weatherifyFront
+npm install
+npm run build
+```
 
-2. Package the Backend (Spring Boot), including Frontend:
-* Open a terminal (or use the same one).
-* Navigate to your backend directory:
-bash cd path/to/WeatherifyFinalProjectSubmission/weatherifyBack 
-* Clean and package the application using Maven. This will compile the Java code and, thanks to the maven-resources-plugin configuration in your pom.xml (ensure it's set to run during process-resources or prepare-package phase), copy the contents of weatherifyFront/dist/ into the backend's static resources.
-bash mvn clean package 
-* This will create an executable JAR file in the weatherifyBack/target/ directory (e.g., weatherify-backend-0.0.1-SNAPSHOT.jar).
+### Step 2: Package Backend
 
-3. Run the Packaged Application:
-* Still in the weatherifyBack directory, run the JAR file:
-bash java -jar target/weatherify-backend-0.0.1-SNAPSHOT.jar 
-(Adjust the JAR filename if it's different based on your pom.xml version or artifactId).
-* The application (both backend and frontend) should now be accessible at http://localhost:8080.
-* Check the console for Spring Boot startup logs and any errors.
+```bash
+cd ../weatherifyBack
+mvn clean package
+```
 
-Backend API Endpoints
-GET /api/v1/auth/spotify/login – Initiates Spotify login
+This generates a JAR in `weatherifyBack/target/`, e.g., `weatherify-backend-0.0.1-SNAPSHOT.jar`.
 
-GET /api/v1/auth/spotify/callback – Handles OAuth callback from Spotify
+### Step 3: Run Full App
 
-GET /api/v1/auth/spotify/status – Checks current user's Spotify login status
+```bash
+java -jar target/weatherify-backend-0.0.1-SNAPSHOT.jar
+```
 
-POST /api/v1/auth/spotify/logout – Logs the user out from the backend Spotify session
+Then open: [http://localhost:8080](http://localhost:8080)
 
-POST /api/v1/playlist/generate – Generates a playlist based on the current weather context
+---
 
-GET /api/v1/weather/current – Returns current weather information (can take zip or lat & lon query params)
+## Backend API Endpoints
 
-Frontend Features
-Weather-based visual UI (sun, cloud, rain icons reflect current conditions).
+* `GET /api/v1/auth/spotify/login` – Initiates Spotify login
+* `GET /api/v1/auth/spotify/callback` – Handles OAuth callback
+* `GET /api/v1/auth/spotify/status` – Checks user login status
+* `POST /api/v1/auth/spotify/logout` – Logs the user out
+* `POST /api/v1/playlist/generate` – Generates a playlist based on weather
+* `GET /api/v1/weather/current` – Returns current weather info (zip or coordinates)
 
-Spotify login/logout functionality.
+---
 
-Location-based weather fetching (using browser geolocation or ZIP code input).
+## Frontend Features
 
-User feedback popups for actions like login success/failure, playlist generation.
+* Weather-based visual UI (sun, cloud, rain icons)
+* Spotify login/logout functionality
+* Geolocation and ZIP-based weather fetching
+* Popups for user feedback (success, failure, etc.)
+* "Generate Playlist" button to open Spotify
 
-"Generate Playlist" button to create and open a Spotify playlist.
+---
 
-Notes
-Ensure all API keys and redirect URIs are correctly set up for your chosen environment (local vs. deployed).
+## Notes
 
-The backend uses session-based authentication for Spotify.
-
-The application logic maps weather conditions to specific music genres to tailor playlist generation.
+* All API keys must be valid and correctly configured.
+* Spotify session uses backend session management.
+* The app maps weather conditions to Spotify genres for playlist generation.
