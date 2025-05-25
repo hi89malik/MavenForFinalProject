@@ -112,7 +112,7 @@ weatherapi.key=your_weatherapi_key
 
 Make sure this redirect URI is listed:
 ```
-http://localhost:8080/api/v1/auth/spotify/callback
+http://127.0.0.1:8080/api/v1/auth/spotify/callback
 ```
 
 ---
